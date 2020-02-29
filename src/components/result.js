@@ -10,7 +10,7 @@ export default class result extends Component {
     render() {
         return (
             <div className="col-lg12 text-center">
-                <p className="mgt-2">Color: {this.props.color} - Font-size: 15px</p>
+                <p className="mgt-2">Color: {this.props.color} - Font-size: {this.props.fontSize}px</p>
 
                 <div className="grid-content" style={this.setColor()}>
                     <p >Noi dung settings</p>

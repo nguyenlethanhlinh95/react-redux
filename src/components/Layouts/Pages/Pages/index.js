@@ -20,6 +20,18 @@ export default class index extends Component {
             color: params
         })
     }
+    changeFontSize = (value) => {
+        if (value == 1){
+            this.setState({
+                fontSize: this.state.fontSize + 1
+            })
+        }
+        else{
+            this.setState({
+                fontSize: this.state.fontSize - 1
+            })
+        }
+    }
 
     render() {
         return (
@@ -30,7 +42,7 @@ export default class index extends Component {
                             <ColorPicker color={this.state.color} onReceiveColor={this.onSetColor}></ColorPicker>
                         </div>
                         <div className="col-lg-6">
-                            <SizeSetting></SizeSetting>
+                            <SizeSetting fontSize={this.state.fontSize} changeFontSize={this.changeFontSize}></SizeSetting>
                         </div>
                         <div className="row">
                             <div className="col-lg12 text-center">
@@ -38,7 +50,7 @@ export default class index extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <Result color={this.state.color}></Result>
+                            <Result color={this.state.color} fontSize={this.state.fontSize}></Result>
                         </div>
                     </div>
                 </div>
