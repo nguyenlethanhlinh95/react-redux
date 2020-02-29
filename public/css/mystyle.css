@@ -1,3 +1,23 @@
 img{
     width: 100%;
 }
+.mgt-5{
+    margin-top: 5vw;
+}
+.mgr-1{
+    margin-right: 1vw;
+}
+p{
+    margin: 0;
+}
+.grid-content{
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw 0;
+    margin-top: 2vw;
+}
+.mgt-2{
+    margin-top: 2vw;
+}
