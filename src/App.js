@@ -6,9 +6,7 @@ import Product from './components/product';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Header></Header>
-      </header>
+      <Header></Header>
       <div className="container">
         <div className="row">
           <Product></Product>
