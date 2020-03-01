@@ -10,4 +10,9 @@ const allReducers = redux.combineReducers({
 });
 
 var store1 = redux.createStore(allReducers);
+
+store1.subscribe(() => {
+    console.log(store1.getState());
+  });
+
 export default store1;
