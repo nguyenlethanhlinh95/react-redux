@@ -4,7 +4,8 @@ import News from './components/News';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    dulieu: state.num
+    dulieu: state.num,
+    status: state.status
   }
 }
 
@@ -15,6 +16,7 @@ class App extends Component {
         <h1>Hello 1234</h1>
         <News></News>
         {this.props.dulieu}
+        {this.props.status ? 1: 0}
       </div>
     );
   }
