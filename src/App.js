@@ -9,6 +9,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       tasks: [], // id: unique, name, status
+      isDisplayForm: false,
     };
   };
 
@@ -26,7 +27,7 @@ export default class App extends Component {
       {
         id: 1,
         name: 'Hoc lap trinh',
-        status: true
+        status: false
       },
       {
         id: 2,
@@ -42,13 +43,25 @@ export default class App extends Component {
     this.setState({
       tasks: tasks
     });
-
     // add local storage
     localStorage.setItem('tasks',JSON.stringify(tasks));
   }
 
+  // get data form submit
+  onSubmit = (data) => {
+    console.log(data);
+  }
+
+  // Toggle Form
+  onToggleForm = () => {
+    this.setState({
+      isDisplayForm: !this.state.isDisplayForm
+    })
+  }
+
   render() {
-    console.log("render");
+    var { isDisplayForm } = this.state;
+    let elmTaskForm = isDisplayForm ? <FormTodo onSubmit={this.onSubmit}></FormTodo> : ''
     return (
       <div className="container">
         <div className="text-center">
@@ -56,11 +69,11 @@ export default class App extends Component {
           <hr />
         </div>
         <div className="row">
-          <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <FormTodo></FormTodo>
+          <div className={ isDisplayForm ? "col-xs-4 col-sm-4 col-md-4 col-lg-4" : ""} >
+              {elmTaskForm}
           </div>
-          <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <button type="button" className="btn btn-primary">
+          <div className={isDisplayForm ? "col-xs-8 col-sm-8 col-md-8 col-lg-8" : "col-xs-12 col-sm-12 col-md-12 col-lg-12"} >
+            <button onClick={this.onToggleForm} type="button" className="btn btn-primary">
               <span className="fa fa-plus mr-5" />Thêm Công Việc
             </button>
             <button onClick={this.generateData} type="button" className="btn btn-info">

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 export default class table extends Component {
-    
     render() {
         var tasks = this.props.tasks;
         var elements = tasks.map((item, index)=>{
@@ -9,8 +8,11 @@ export default class table extends Component {
                         <td>{index+1}</td>
                         <td>{item.name}</td>
                         <td className="text-center">
-                        <span className="label label-success">
+                        {/* <span className="label label-success">
                             Kích Hoạt
+                        </span> */}
+                        <span className={ item.status === true ? 'label label-danger' : 'label label-success'}>
+                           {item.status === true ? 'Kích Hoạt' : 'Tạm khóa'}  
                         </span>
                         </td>
                         <td className="text-center">
