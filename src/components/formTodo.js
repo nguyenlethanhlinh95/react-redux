@@ -4,6 +4,7 @@ export default class formTodo extends Component {
     constructor(props){
       super(props);
       this.state = {
+        id: '',
         name: '',
         status: false
       };
@@ -15,7 +16,12 @@ export default class formTodo extends Component {
     }
     onSubmit = (e) => {
       e.preventDefault();
-      this.props.onSubmit(this.state.name, this.state.status === 'true' ? true:false);
+      let data = {
+        id: '',
+        name: this.state.name, 
+        status:  this.state.status === 'true' ? true:false
+      }
+      this.props.onSubmit(data);
 
       // Cancel & Close Form
       this.onClear();
@@ -34,12 +40,23 @@ export default class formTodo extends Component {
       this.props.onCloseForm();
     }
 
-    // change status form
+    //get data editing
+    componentWillMount(){
+      if (this.props.task){
+        this.setState({
+          id: this.props.task.id,
+          name: this.props.task.name,
+          status: this.props.task.status,
+        });
+      }
+    }
+    // change status form 
     render() {
+      let {id} = this.state;
         return (
             <div className="panel panel-warning">
               <div className="panel-heading">
-                <h3 className="panel-title">Thêm Công Việc <span className="close" onClick={this.onCloseForm}><i className="fa fa-times-circle" aria-hidden="true"></i>
+                <h3 className="panel-title"> {id !== '' ? 'Cập nhật công việc': 'Thêm công việc'} <span className="close" onClick={this.onCloseForm}><i className="fa fa-times-circle" aria-hidden="true"></i>
 </span></h3>
               </div>
               <div className="panel-body">

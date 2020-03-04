@@ -11,6 +11,7 @@ export default class App extends Component {
     this.state = {
       tasks: [], // id: unique, name, status
       isDisplayForm: false,
+      taskEditing: null
     };
   };
 
@@ -48,19 +49,22 @@ export default class App extends Component {
     localStorage.setItem('tasks',JSON.stringify(tasks));
   }
 
-  // get data form submit
-  onSubmit = (name,status) => {
-    // tao moi doi tuong
-    var task = {
-      id: this.generateID(),
-      name: name,
-      status: status
+  // get data form submit, update
+  onSubmit = (data) => {
+    let { tasks } = this.state;
+    // check id === rong hay khong, neu bang rong la them moi, nguoc lai la cap nhat
+    if (data.id ===''){
+      // tao moi doi tuong
+      data.id = this.generateID();
+      tasks.push(data);
+    } else{
+      let index = this.findIndex(data.id);
+      tasks[index] = data;
     }
-    // add vao state, cap nhat tren local
-    var {tasks} = this.state;
-    tasks.push(task);
+    // // add vao state, cap nhat tren local
     this.setState({
-      tasks: tasks
+      tasks: tasks,
+      taskEditing: null
     });
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
@@ -84,13 +88,80 @@ export default class App extends Component {
 
   onCloseForm = () => {
     this.setState({
-      isDisplayForm : !this.state.isDisplayForm
+      isDisplayForm : false
     });
   }
 
+  onShowForm = () => {
+    this.setState({
+      isDisplayForm : true
+    });
+  }
+
+  // cap nhat status table
+  onUpdateStatus = (id) => {
+    let {tasks} = this.state;
+    let index = this.findIndex(id);
+    if (index !== -1){
+      tasks[index].status = !tasks[index].status;
+      // cap nhat lai state
+      this.setState({
+        tasks: tasks
+      });
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+  }
+
+  // delete item
+  onDelete = (id) => {
+    let {tasks} = this.state;
+    let index = this.findIndex(id);
+    if (index !== -1){
+      //xoa phan tu
+      tasks.splice(index,1);
+      // cap nhat lai state
+      this.setState({
+        tasks: tasks
+      });
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      this.onCloseForm();
+    }
+  }
+
+  // update item
+  onUpdate = (id) => {
+    let { tasks } = this.state;
+    let index = this.findIndex(id);
+    let taskEditing= tasks[index]
+    // console.log(taskEditing);
+    this.setState({
+      taskEditing: taskEditing
+    });
+    this.onShowForm();
+  }
+
+  // tim ra phan tu khac id
+
+  // tim chi so cua phan tu
+  findIndex = (id) => {
+    let rs = -1;
+    let {tasks} = this.state;
+    tasks.forEach((task, index)=>{
+      if (task.id === id){
+        return rs = index
+      }
+    });
+    return rs;
+  }
+
   render() {
-    var { isDisplayForm } = this.state;
-    let elmTaskForm = isDisplayForm ? <FormTodo onSubmit={this.onSubmit} onCloseForm={this.onCloseForm}></FormTodo> : ''
+    var { isDisplayForm, taskEditing } = this.state;
+    let elmTaskForm = isDisplayForm ? 
+    <FormTodo 
+      task={taskEditing} 
+      onSubmit={this.onSubmit} 
+      onCloseForm={this.onCloseForm}>
+      </FormTodo> : ''
     return (
       <div className="container">
         <div className="text-center">
@@ -114,7 +185,12 @@ export default class App extends Component {
             </div>
             <div className="row mgt-1">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <Table tasks={this.state.tasks}></Table>
+                <Table tasks={this.state.tasks} 
+                        onUpdateStatus={this.onUpdateStatus}
+                        onDelete={this.onDelete}
+                        onUpdate={this.onUpdate}
+                        >
+                </Table>
               </div>
             </div>
           </div>

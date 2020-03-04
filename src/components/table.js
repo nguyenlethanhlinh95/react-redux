@@ -1,6 +1,18 @@
 import React, { Component } from 'react'
 
 export default class table extends Component {
+  onUpdateStatus = (id) => {
+    this.props.onUpdateStatus(id);
+  }
+
+  onDelete = (id) => {
+    this.props.onDelete(id);
+  }
+
+  onUpdate = (id) => {
+    this.props.onUpdate(id);
+  }
+
     render() {
         var tasks = this.props.tasks;
         var elements = tasks.map((item, index)=>{
@@ -11,16 +23,16 @@ export default class table extends Component {
                         {/* <span className="label label-success">
                             Kích Hoạt
                         </span> */}
-                        <span className={ item.status === true ? 'label label-danger' : 'label label-success'}>
+                        <span onClick={()=>this.onUpdateStatus(item.id)} className={ item.status === true ? 'label label-danger' : 'label label-success'}>
                            {item.status === true ? 'Kích Hoạt' : 'Tạm khóa'}  
                         </span>
                         </td>
                         <td className="text-center">
-                        <button type="button" className="btn btn-warning">
+                        <button onClick={()=>this.onUpdate(item.id)} type="button" className="btn btn-warning">
                             <span className="fa fa-pencil mr-5" />Sửa
                         </button>
                         &nbsp;
-                        <button type="button" className="btn btn-danger">
+                        <button onClick={()=>this.onDelete(item.id)} type="button" className="btn btn-danger">
                             <span className="fa fa-trash mr-5" />Xóa
                         </button>
                         </td>
