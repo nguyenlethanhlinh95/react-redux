@@ -15,13 +15,32 @@ export default class formTodo extends Component {
     }
     onSubmit = (e) => {
       e.preventDefault();
-      this.props.onSubmit(this.state);
+      this.props.onSubmit(this.state.name, this.state.status === 'true' ? true:false);
+
+      // Cancel & Close Form
+      this.onClear();
+      this.onCloseForm();
     }
+
+    // clear form
+    onClear = () => {
+      this.setState({
+        name: '',
+        status: false
+      });
+    }
+
+    onCloseForm = () => {
+      this.props.onCloseForm();
+    }
+
+    // change status form
     render() {
         return (
             <div className="panel panel-warning">
               <div className="panel-heading">
-                <h3 className="panel-title">Thêm Công Việc</h3>
+                <h3 className="panel-title">Thêm Công Việc <span className="close" onClick={this.onCloseForm}><i className="fa fa-times-circle" aria-hidden="true"></i>
+</span></h3>
               </div>
               <div className="panel-body">
                 <form onSubmit={this.onSubmit}>
@@ -37,7 +56,7 @@ export default class formTodo extends Component {
                   <br />
                   <div className="text-center">
                     <button type="submit" className="btn btn-warning">Thêm</button>&nbsp;
-                    <button type="submit" className="btn btn-danger">Hủy Bỏ</button>
+                    <button onClick={this.onClear} type="submit" className="btn btn-danger">Hủy Bỏ</button>
                   </div>
                 </form>
               </div>

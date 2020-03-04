@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import FormTodo from './components/formTodo';
-import Search from './components/search';
-import Sort from './components/sort';
 import Table from './components/table';
+import Sort from './components/Sort';
+import Search from './components/Search';
+
 
 export default class App extends Component {
   constructor(props){
@@ -25,17 +26,17 @@ export default class App extends Component {
   generateData = () => {
     let tasks = [
       {
-        id: 1,
+        id: this.generateID(),
         name: 'Hoc lap trinh',
         status: false
       },
       {
-        id: 2,
+        id: this.generateID(),
         name: 'Di hoc',
         status: true
       },
       {
-        id: 3,
+        id: this.generateID(),
         name: 'Ngu',
         status: true
       }
@@ -48,8 +49,20 @@ export default class App extends Component {
   }
 
   // get data form submit
-  onSubmit = (data) => {
-    console.log(data);
+  onSubmit = (name,status) => {
+    // tao moi doi tuong
+    var task = {
+      id: this.generateID(),
+      name: name,
+      status: status
+    }
+    // add vao state, cap nhat tren local
+    var {tasks} = this.state;
+    tasks.push(task);
+    this.setState({
+      tasks: tasks
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 
   // Toggle Form
@@ -59,9 +72,25 @@ export default class App extends Component {
     })
   }
 
+  // sinh id tu dong
+  s4(){
+    return Math.floor((1+Math.random())*0x10000).toString(16).substring(1);
+  }
+
+  generateID(){
+    return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' 
+    + this.s4() + '-' + + this.s4() + '-' + this.s4();
+  }
+
+  onCloseForm = () => {
+    this.setState({
+      isDisplayForm : !this.state.isDisplayForm
+    });
+  }
+
   render() {
     var { isDisplayForm } = this.state;
-    let elmTaskForm = isDisplayForm ? <FormTodo onSubmit={this.onSubmit}></FormTodo> : ''
+    let elmTaskForm = isDisplayForm ? <FormTodo onSubmit={this.onSubmit} onCloseForm={this.onCloseForm}></FormTodo> : ''
     return (
       <div className="container">
         <div className="text-center">
@@ -80,12 +109,8 @@ export default class App extends Component {
               <span className="fa fa-plus mr-5" />Generate data
             </button>
             <div className="row mgt-1">
-              <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <Search></Search>
-              </div>
-              <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <Sort></Sort>
-              </div>
+              <Search></Search>
+              <Sort></Sort>
             </div>
             <div className="row mgt-1">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
