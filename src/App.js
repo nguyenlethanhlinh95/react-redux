@@ -71,9 +71,18 @@ export default class App extends Component {
 
   // Toggle Form
   onToggleForm = () => {
-    this.setState({
-      isDisplayForm: !this.state.isDisplayForm
-    })
+    // neu form dang mo va co gia tri thi khong lam gi, nguoc lai thi xoa du lieu va dong form
+    if (this.state.isDisplayForm && this.state.taskEditing !== null){
+      this.setState({
+        isDisplayForm: true,
+        taskEditing: null
+      })
+    }else{
+      this.setState({
+        isDisplayForm: !this.state.isDisplayForm,
+        taskEditing: null
+      })
+    }  
   }
 
   // sinh id tu dong

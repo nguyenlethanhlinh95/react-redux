@@ -50,6 +50,22 @@ export default class formTodo extends Component {
         });
       }
     }
+
+    componentWillReceiveProps(nextProps){
+      if (nextProps && nextProps.task){
+        this.setState({
+          id: nextProps.task.id,
+          name: nextProps.task.name,
+          status: nextProps.task.status,
+        });
+      }else if(!nextProps.task){
+        this.setState({
+          id: '',
+          name: '',
+          status: false
+        });
+      }
+    }
     // change status form 
     render() {
       let {id} = this.state;
